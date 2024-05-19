@@ -1,6 +1,8 @@
 @page "/fetchdata"
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components
 @using Ims_api.Models
-@using System.Net.HttpClient 
 @inject HttpClient Http
 
 <h3>Inventory Items</h3>
@@ -19,7 +21,8 @@ else
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Date Last Updated</th>
-                
+                <th>Available</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +54,7 @@ else
 
     private void EditItem(int sku)
     {
-        // Navigate to edit page 
+        // Navigate to edit page (implementation not shown)
     }
 
     private async Task DeleteItem(int sku)

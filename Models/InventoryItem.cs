@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ims_api.Models
 {
-    public class InventoryItems
+    public class InventoryItem
     {
         [Key]
         public int SKU {get; set; }
@@ -13,5 +13,4 @@ namespace Ims_api.Models
         public DateTime Last_update {get; set; } 
 
     }
-
 }

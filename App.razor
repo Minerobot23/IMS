@@ -1,8 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using Microsoft.AspNetCore.Components.Web
-
-
+@using IMS.Shared // Ensure this matches the namespace of MainLayout
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -15,4 +14,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-
