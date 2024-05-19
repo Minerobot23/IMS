@@ -1,0 +1,67 @@
+@page "/addedititem/{sku:int?}"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using Ims_api.Models 
+@using System.Net.HttpClient
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+
+
+
+<h3>@(isEditMode ? "Edit Item" : "Add Item")</h3>
+
+<EditForm Model="@InventoryItem" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>SKU</label>
+        <InputNumber class="form-control" @bind-Value="inventoryItem.SKU" disabled="@isEditMode" />
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <InputText class="form-control" @bind-Value="inventoryItem.Product_name" />
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <InputNumber class="form-control" @bind-Value="inventoryItem.Product_quantity" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <InputNumber class="form-control" @bind-Value="inventoryItem.Price" />
+    </div>
+    <div class="form-group">
+        <label>Date Last Updated</label>
+        <InputDate class="form-control" @bind-Value="inventoryItem.Last_update" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? sku { get; set; }
+
+    private InventoryItem inventoryItem = new InventoryItem();
+    private bool isEditMode => sku.HasValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (isEditMode)
+        {
+            inventoryItem = await Http.GetFromJsonAsync<InventoryItem>($"api/Inventory/{sku}");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (isEditMode)
+        {
+            await Http.PutAsJsonAsync($"api/Inventory/{sku}", inventoryItem);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync("api/Inventory", inventoryItem);
+        }
+        Navigation.NavigateTo("/fetchdata");
+    }
+}

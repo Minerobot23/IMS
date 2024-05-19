@@ -1,10 +1,17 @@
-public class InventoryItems
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Ims_api.Models
 {
-    public int SKU {get; set; }
-    public string Name {get; set; }
-    public int Quantity {get; set; }
-    public int Price {get; set; }
-    public DateTime DateLastUpdated {get; set; } 
-    public bool Available {get; set; }
+    public class InventoryItems
+    {
+        [Key]
+        public int SKU {get; set; }
+        public string Product_name {get; set; }
+        public int Product_quantity {get; set; }
+        public float Price {get; set; }
+        public DateTime Last_update {get; set; } 
+
+    }
 
 }

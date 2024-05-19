@@ -1,0 +1,62 @@
+@page "/fetchdata"
+@using Ims_api.Models
+@using System.Net.HttpClient 
+@inject HttpClient Http
+
+<h3>Inventory Items</h3>
+
+@if (inventoryItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SKU</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Date Last Updated</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in inventoryItems)
+            {
+                <tr>
+                    <td>@item.SKU</td>
+                    <td>@item.Product_name</td>
+                    <td>@item.Product_quantity</td>
+                    <td>@item.Price</td>
+                    <td>@item.Last_update</td>
+                    <td>
+                        <button @onclick="() => EditItem(item.SKU)">Edit</button>
+                        <button @onclick="() => DeleteItem(item.SKU)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private InventoryItem[] inventoryItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        inventoryItems = await Http.GetFromJsonAsync<InventoryItem[]>("api/Inventory");
+    }
+
+    private void EditItem(int sku)
+    {
+        // Navigate to edit page 
+    }
+
+    private async Task DeleteItem(int sku)
+    {
+        await Http.DeleteAsync($"api/Inventory/{sku}");
+        inventoryItems = inventoryItems.Where(item => item.SKU != sku).ToArray();
+    }
+}
